@@ -1,0 +1,1 @@
+from .translations import lang_bp;
