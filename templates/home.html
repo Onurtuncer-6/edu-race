@@ -1,12 +1,677 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ g.lang }}">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>{{ title }}</title>
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+
+
+    <title>{{ g.text['home']['title'] }}</title>
+
+    <style>
+        *,
+        *::after,
+        *::before {
+            padding: 0;
+            margin: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        :root {
+            --bg-color: #0F172A;
+            --text-color: #ffff;
+
+            --nav-gray: #94A3B8;
+            --bright-blue: #38BDF8;
+
+            --text-color2: #60A5FA;
+            --text-color3: #F97316;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        /* Navbar */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 5%;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            color: var(--text-color2);
+            font-size: clamp(1.1rem, 4vw, 2rem);
+            font-weight: 800;
+            letter-spacing: 2px;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+        }
+
+        .flag {
+            margin: 0 10px;
+        }
+
+        .logo-race {
+            color: var(--text-color3);
+            padding: 0 5px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            list-style: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--nav-gray);
+            font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--bright-blue);
+        }
+
+        .custom-lang-dropdown {
+            position: relative;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: var(--nav-gray);
+            user-select: none;
+        }
+
+        .selected-lang {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .selected-lang:hover {
+            border-color: var(--bright-blue);
+            color: var(--text-color);
+        }
+
+        .arrow-down {
+            border: solid var(--nav-gray);
+            border-width: 0 2px 2px 0;
+            display: inline-block;
+            padding: 2px;
+            transform: rotate(45deg);
+            margin-left: 4px;
+        }
+
+        .lang-options {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background: #1E293B;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            list-style: none;
+            min-width: 100px;
+            display: none;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .lang-options li {
+            padding: 10px 15px;
+            transition: background 0.2s;
+        }
+
+        .lang-options li:hover {
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--bright-blue);
+        }
+
+        .custom-lang-dropdown.active .lang-options {
+            display: block;
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        .nav-cta {
+            text-decoration: none;
+            background-color: var(--bright-blue);
+            color: #0F172A;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-size: 10.5pt;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.2);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            background-color: #7DD3FC;
+            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4);
+        }
+
+        .nav-cta:active {
+            transform: translateY(0);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            z-index: 1001;
+            padding: 10px;
+        }
+
+        .menu-toggle span {
+            width: 28px;
+            height: 3px;
+            background-color: var(--text-color);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .hero {
+            padding: 160px 5% 60px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.8rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .hero-badge {
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--bright-blue);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .hero-badge .dot {
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            box-shadow: 0 0 12px #22c55e;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.5);
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .hero-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2.2rem, 7vw, 4.5rem);
+            line-height: 1.1;
+            text-transform: uppercase;
+            font-weight: 900;
+        }
+
+        .gradient-blue {
+            color: var(--bright-blue);
+            text-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+        }
+
+        .gradient-orange {
+            color: var(--text-color3);
+            text-shadow: 0 0 20px rgba(249, 115, 22, 0.4);
+        }
+
+        .hero-description {
+            max-width: 700px;
+            color: var(--nav-gray);
+            font-size: clamp(1rem, 1.5vw, 1.25rem);
+            line-height: 1.7;
+        }
+
+        /* BUTONLAR */
+        .hero-btns {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .btn-primary,
+        .btn-secondary {
+            padding: 16px 32px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--bright-blue);
+            color: var(--bg-color);
+            box-shadow: 0 8px 25px rgba(56, 189, 248, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(56, 189, 248, 0.5);
+            background: #7DD3FC;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: white;
+        }
+
+        /* --- STATS SECTION --- */
+        .stats-container {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            margin: 40px 5% 100px;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+            padding: 40px 20px;
+            align-items: center;
+            /* Başlangıçta animasyon için gizli */
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.22, 1, 0.36, 1) 0.2s;
+            /* 0.2s gecikme */
+        }
+
+        .visible {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+
+        .stat-card {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.5rem, 3vw, 2.8rem);
+            color: var(--bright-blue);
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: var(--nav-gray);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-divider {
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.1), transparent);
+        }
+
+        /* --- SPEED LINES (ARKA PLAN) --- */
+        .speed-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .speed-line {
+            position: absolute;
+            width: 1px;
+            height: 100px;
+            background: linear-gradient(to bottom, transparent, var(--bright-blue), transparent);
+            opacity: 0.2;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            from {
+                transform: translateY(-200px);
+            }
+
+            to {
+                transform: translateY(110vh);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: flex;
+                position: fixed;
+                left: -100%;
+                top: 0;
+                height: 100dvh;
+                width: 75%;
+                background-color: rgba(15, 23, 42, 0.95);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 2.5rem;
+                transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                box-shadow: 15px 0 30px rgba(0, 0, 0, 0.6);
+                -webkit-backdrop-filter: blur(20px);
+                backdrop-filter: blur(20px);
+                border-right: 1px solid rgba(255, 255, 255, 0.05);
+                z-index: 999;
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .custom-lang-dropdown,
+            .nav-cta {
+                display: none;
+            }
+
+            /* Hamburger 'X' Animasyonu */
+            .menu-toggle.open span:nth-child(1) {
+                transform: rotate(45deg) translate(6px, 6px);
+            }
+
+            .menu-toggle.open span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .menu-toggle.open span:nth-child(3) {
+                transform: rotate(-45deg) translate(6px, -7px);
+            }
+
+            nav {
+                justify-content: space-between !important;
+                padding: 0.8rem 15px;
+            }
+
+            .menu-toggle {
+                display: flex;
+                order: 2;
+            }
+
+            .nav-logo {
+                order: 1;
+            }
+
+            .stats-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                margin-top: 20px;
+            }
+
+            .stat-divider {
+                display: none;
+            }
+
+            .hero {
+                padding-top: 120px;
+            }
+
+            .hero-btns {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn-primary,
+            .btn-secondary {
+                width: 100%;
+                text-align: center;
+                box-sizing: border-box;
+            }
+        }
+    </style>
 </head>
+
 <body>
-    
+
+    <div class="speed-bg" id="speedBg"></div>
+
+    <nav>
+
+        <div class="nav-logo">
+            <span class="flag">🏁</span>
+            EDU <span class="logo-race">RACE</span>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="#how"> {{g.text['home']['nav']['links']['how']}} </a></li>
+            <li><a href="#features"> {{g.text['home']['nav']['links']['features']}} </a></li>
+            <li><a href="#categories"> {{g.text['home']['nav']['links']['categories']}} </a></li>
+            <li><a href="#ranking"> {{g.text['home']['nav']['links']['ranking']}} </a></li>
+        </ul>
+
+        <div class="custom-lang-dropdown">
+            <div class="selected-lang">
+                <span class="current-flag"> {{ '🇹🇷' if g.lang == 'tr' else '🇬🇧'}} </span>
+                <span class="current-text"> {{ 'TR' if g.lang == 'tr' else 'EN'}} </span>
+                <i class="arrow-down"></i>
+            </div>
+            <ul class="lang-options">
+                <li onclick="window.location.href='?lang=tr'">🇹🇷 TR</li>
+                <li onclick="window.location.href='?lang=en'">🇬🇧 EN</li>
+            </ul>
+        </div>
+
+        <a class="nav-cta" href="">
+            {{ g.text['home']['nav']['cta'] }}
+        </a>
+
+        <div class="menu-toggle" id="mobileMenu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="hero-badge">
+                <span class="dot"></span> {{ g.text['home']['hero']['badge'] }}
+            </div>
+
+            <h1 class="hero-title">
+                {{ g.text['home']['hero']['title_part1'] }} <span class="gradient-blue">{{
+                    g.text['home']['hero']['title_part2'] }}</span><br>
+                <span class="gradient-orange">{{ g.text['home']['hero']['title_part3'] }}</span>
+            </h1>
+
+            <p class="hero-description">
+                {{ g.text['home']['hero']['description'] }}
+            </p>
+
+            <div class="hero-btns">
+                <a href="#" class="btn-primary">🚀 {{ g.text['home']['hero']['btn_register'] }}</a>
+                <a href="#" class="btn-secondary">{{ g.text['home']['hero']['btn_demo'] }} ▶️</a>
+            </div>
+        </section>
+
+        <section class="stats-container">
+            <div class="stat-card">
+                <h2 class="stat-value">{{ stats.total_schools }}</h2>
+                <p class="stat-label">{{ g.text['home']['stats']['schools'] }}</p>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-card">
+                <h2 class="stat-value">{{ stats.active_races }}</h2>
+                <p class="stat-label">{{ g.text['home']['stats']['races'] }}</p>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-card">
+                <h2 class="stat-value">{{ stats.total_students }}</h2>
+                <p class="stat-label">{{ g.text['home']['stats']['students'] }}</p>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-card">
+                <h2 class="stat-value">{{ stats.total_cities }}</h2>
+                <p class="stat-label">{{ g.text['home']['stats']['cities'] }}</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const menuToggle = document.getElementById('mobileMenu');
+        const navLinks = document.querySelector('.nav-links');
+        const langSelected = document.querySelector('.selected-lang');
+        const langDropdown = document.querySelector('.custom-lang-dropdown');
+
+        menuToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            navLinks.classList.toggle('active');
+            menuToggle.classList.toggle('open');
+        });
+
+        langSelected.addEventListener('click', (e) => {
+            e.stopPropagation();
+            langDropdown.classList.toggle('active');
+        });
+
+        window.onclick = function (event) {
+            if (!event.target.closest('.custom-lang-dropdown')) {
+                langDropdown.classList.remove('active');
+            }
+
+            if (!event.target.closest('.nav-links') && !event.target.closest('.menu-toggle')) {
+                navLinks.classList.remove('active');
+                menuToggle.classList.remove('open');
+            }
+        };
+
+        document.addEventListener('touchstart', (e) => {
+            if (!event.target.closest('.nav-links') && !event.target.closest('.menu-toggle')) {
+                if (navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                    menuToggle.classList.remove('open');
+                }
+            }
+        }, { passive: true });
+
+        function initAnimations() {
+            const speedBg = document.getElementById('speedBg');
+            for (let i = 0; i < 20; i++) {
+                const line = document.createElement('div');
+                line.className = 'speed-line';
+                line.style.left = Math.random() * 100 + 'vw';
+                line.style.animationDuration = (Math.random() * 1 + 0.5) + 's';
+                line.style.animationDelay = Math.random() * 2 + 's';
+                speedBg.appendChild(line);
+            }
+
+            const observerOptions = { threshold: 0.2 };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+
+                        if (entry.target.classList.contains('stats-container')) {
+                            animateNumbers();
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.hero, .stats-container').forEach(el => observer.observe(el));
+        }
+
+        function animateNumbers() {
+            const stats = document.querySelectorAll('.stat-value');
+            stats.forEach(stat => {
+                if (stat.dataset.animated) return;
+
+                const target = parseInt(stat.innerText.replace(/\./g, ''));
+                let count = 0;
+                const speed = 2000;
+                const increment = target / (speed / 16);
+
+                const update = () => {
+                    count += increment;
+                    if (count < target) {
+                        stat.innerText = Math.ceil(count).toLocaleString('tr-TR');
+                        requestAnimationFrame(update);
+                    } else {
+                        stat.innerText = target.toLocaleString('tr-TR');
+                        stat.dataset.animated = true;
+                    }
+                };
+                update();
+            });
+        }
+
+        window.addEventListener('load', initAnimations);
+    </script>
 </body>
+
 </html>

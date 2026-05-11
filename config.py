@@ -1,9 +1,12 @@
 # config.py
-import os
+import os;
+from dotenv import load_dotenv;
+
+load_dotenv();
 
 class Config:
     # General Configurations
-    PORT = 5000;
+    PORT = 3000;
     DEBUG = True;
 
     # Json Arrangement Configurations
@@ -11,4 +14,6 @@ class Config:
     JSON_SORT_KEYS = False;
 
 
-    SECRET_KEY = "onur_macbook_secret"
+    SECRET_KEY = "onur_macbook_secret";
+    SUPABASE_URL = os.getenv("NEXT_PUBLIC_SUPABASE_URL")
+    SUPABASE_KEY = os.getenv("NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY")
