@@ -1,6 +1,4 @@
-# language/translations.py
-from flask import Blueprint, request, g, session;
-
+from flask import Blueprint, request, g, session
 
 languages = {
     "tr": {
@@ -30,6 +28,28 @@ languages = {
                 "races": "Aktif Yarış",
                 "students": "Toplam Öğrenci",
                 "cities": "Şehir"
+            },
+            "how_it_works": {
+                "label": "SİSTEM İŞLEYİŞİ",
+                "title": "4 Adımda Dijital Yönetim",
+                "steps": [
+                    {"title": "Kurumsal Tanımlama", "desc": "Okul yöneticisi yetkilendirmesiyle kurumunuzu sisteme entegre edin ve resmi profilinizi oluşturun."},
+                    {"title": "Faaliyet Alanı Seçimi", "desc": "Akademik, kültürel veya sportif branşlar arasından kurumunuzun yetkinliklerine uygun alanları belirleyin."},
+                    {"title": "Veri Girişi ve Analiz", "desc": "Gerçekleştirilen faaliyetlerin sonuçlarını sisteme aktararak performans verilerinin işlenmesini sağlayın."},
+                    {"title": "Sertifikasyon", "desc": "Elde edilen başarıları resmi raporlara dönüştürün ve kurum sıralamasındaki yerinizi güncelleyin."}
+                ]
+            },
+            "ranking": {
+                "title": "KURUMSAL PERFORMANS SIRALAMASI",
+                "subtitle": "ULUSAL AKADEMİK BAŞARI ENDEKSİ — 2026",
+                "math_ranking_title": "CANLI MATEMATİK SIRALAMASI",
+                "live_text": "CANLI",
+                "no_data": "Henüz veri girişi yapılmadı.",
+                "global": "Küresel Ölçek",
+                "tr": "Ulusal Ölçek",
+                "table_school": "Okul Adı",
+                "table_city": "Şehir",
+                "table_points": "Puan"
             }
         }
     },
@@ -60,21 +80,40 @@ languages = {
                 "races": "Active Races",
                 "students": "Total Students",
                 "cities": "Cities"
+            },
+            "how_it_works": {
+                "label": "SYSTEM OPERATIONS",
+                "title": "Digital Management in 4 Steps",
+                "steps": [
+                    {"title": "Institutional Integration", "desc": "Integrate your institution through authorized administrator access and establish your official profile."},
+                    {"title": "Category Selection", "desc": "Identify fields consistent with your institution's competencies among academic, cultural, or athletic branches."},
+                    {"title": "Data Entry & Analysis", "desc": "Transfer activity results to the system to ensure the processing of institutional performance data."},
+                    {"title": "Official Reporting", "desc": "Convert achievements into official reports and update your standing in the institutional rankings."}
+                ]
+            },
+            "ranking": {
+                "title": "INSTITUTIONAL PERFORMANCE RANKINGS",
+                "subtitle": "NATIONAL ACADEMIC ACHIEVEMENT INDEX — 2026",
+                "math_ranking_title": "LIVE MATHEMATICS RANKINGS",
+                "live_text": "LIVE",
+                "no_data": "No data available yet.",
+                "global": "Global Scale",
+                "tr": "National Scale",
+                "table_school": "School Name",
+                "table_city": "City",
+                "table_points": "Points"
             }
         }
     }
 }
 
-lang_bp = Blueprint('language', __name__);
+lang_bp = Blueprint('language', __name__)
 
 @lang_bp.before_app_request
 def set_language():
-    url_lang = request.args.get('lang');
-
+    url_lang = request.args.get('lang')
     if url_lang in ['tr', 'en']:
-        session['selected_lang'] = url_lang;
-
-    lang = session.get('selected_lang', 'tr');
-
-    g.lang = lang;
-    g.text = languages[lang];
+        session['selected_lang'] = url_lang
+    lang = session.get('selected_lang', 'tr')
+    g.lang = lang
+    g.text = languages[lang]

@@ -5,11 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
-
 
     <title>{{ g.text['home']['title'] }}</title>
 
@@ -27,6 +25,7 @@
 
         :root {
             --bg-color: #0F172A;
+            --bg-color2: #0d1225;
             --text-color: #ffff;
 
             --nav-gray: #94A3B8;
@@ -41,7 +40,6 @@
             color: var(--text-color);
         }
 
-        /* Navbar */
         nav {
             position: fixed;
             top: 0;
@@ -220,8 +218,6 @@
             flex-direction: column;
             align-items: center;
             gap: 1.8rem;
-            opacity: 0;
-            transform: translateY(30px);
             transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
@@ -289,7 +285,6 @@
             line-height: 1.7;
         }
 
-        /* BUTONLAR */
         .hero-btns {
             display: flex;
             gap: 1.5rem;
@@ -331,7 +326,6 @@
             border-color: white;
         }
 
-        /* --- STATS SECTION --- */
         .stats-container {
             background: rgba(30, 41, 59, 0.4);
             backdrop-filter: blur(15px);
@@ -342,11 +336,9 @@
             grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
             padding: 40px 20px;
             align-items: center;
-            /* Başlangıçta animasyon için gizli */
             opacity: 0;
             transform: translateY(40px);
             transition: all 1s cubic-bezier(0.22, 1, 0.36, 1) 0.2s;
-            /* 0.2s gecikme */
         }
 
         .visible {
@@ -378,7 +370,6 @@
             background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.1), transparent);
         }
 
-        /* --- SPEED LINES (ARKA PLAN) --- */
         .speed-bg {
             position: fixed;
             top: 0;
@@ -406,6 +397,341 @@
 
             to {
                 transform: translateY(110vh);
+            }
+        }
+
+        .mobile-lang-switcher {
+            display: none;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            width: 80%;
+            text-align: center;
+        }
+
+        .mobile-lang-switcher a {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem !important;
+            display: inline-block !important;
+        }
+
+        .lang-divider {
+            color: rgba(255, 255, 255, 0.2);
+            margin: 0 15px;
+        }
+
+        .active-lang {
+            color: var(--bright-blue) !important;
+            font-weight: 800;
+        }
+
+        .neon-divider {
+            width: 90%;
+            height: 3px;
+            margin: 40px auto 80px auto;
+            background: linear-gradient(90deg,
+                    transparent 0%,
+                    #38BDF8 20%,
+                    #F97316 50%,
+                    #b4ff39 80%,
+                    transparent 100%);
+            background-size: 200% 100%;
+            border-radius: 2px;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+            opacity: 0;
+            transform: scaleX(0.3);
+            transition: all 1.5s cubic-bezier(0.22, 1, 0.36, 1) 0.4s;
+        }
+
+        .neon-divider.visible {
+            opacity: 1;
+            transform: scaleX(1);
+            animation: trackRun 3s linear infinite;
+        }
+
+        @keyframes trackRun {
+            0% {
+                background-position: 100% 0%;
+            }
+
+            100% {
+                background-position: -100% 0%;
+            }
+        }
+
+        .info-grid-container {
+            padding: 80px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .section-badge {
+            color: var(--bright-blue);
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.8rem, 3vw, 2.8rem);
+            margin-bottom: 40px;
+        }
+
+        .step-card {
+            display: flex;
+            gap: 20px;
+            padding: 25px;
+            background: rgba(30, 41, 59, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .step-card:hover {
+            border-color: var(--bright-blue);
+            transform: translateX(10px);
+        }
+
+        .active-step {
+            border-color: rgba(56, 189, 248, 0.4);
+            background: rgba(56, 189, 248, 0.05);
+        }
+
+        .step-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            color: var(--bright-blue);
+            width: 45px;
+            height: 45px;
+            border: 2px solid var(--bright-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+        }
+
+        .step-content h3 {
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .step-content p {
+            color: var(--nav-gray);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .dashboard-window {
+            background: #0F172A;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .window-header {
+            background: #1E293B;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .window-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .window-dots span {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .dot-red {
+            background: #FF5F56;
+        }
+
+        .dot-yellow {
+            background: #FFBD2E;
+        }
+
+        .dot-green {
+            background: #27C93F;
+        }
+
+        .window-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            color: var(--nav-gray);
+            letter-spacing: 1px;
+        }
+
+        .dashboard-content {
+            padding: 30px;
+        }
+
+        .ranking-header {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            color: var(--nav-gray);
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ranking-item {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .rank-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .rank-1 {
+            color: #ADFF2F;
+            border-color: #ADFF2F;
+        }
+
+        .rank-2 {
+            color: #00E5FF;
+            border-color: #00E5FF;
+        }
+
+        .rank-3 {
+            color: #FF4D00;
+            border-color: #FF4D00;
+        }
+
+        .school-name {
+            display: block;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .progress-container {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .rank-bg-1 {
+            background: #ADFF2F;
+            box-shadow: 0 0 10px #ADFF2F;
+        }
+
+        .rank-bg-2 {
+            background: #00E5FF;
+            box-shadow: 0 0 10px #00E5FF;
+        }
+
+        .rank-bg-3 {
+            background: #FF4D00;
+            box-shadow: 0 0 10px #FF4D00;
+        }
+
+        .rank-bg-4,
+        .rank-bg-5 {
+            background: #64748B;
+        }
+
+        .points-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .dashboard-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #ADFF2F;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .live-dot {
+            width: 6px;
+            height: 6px;
+            background: #ADFF2F;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #ADFF2F;
+            animation: pulseLive 2s infinite;
+        }
+
+        @keyframes pulseLive {
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.3;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .live-timer {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            color: var(--bright-blue);
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 992px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ranking-side {
+                order: -1;
             }
         }
 
@@ -439,7 +765,6 @@
                 display: none;
             }
 
-            /* Hamburger 'X' Animasyonu */
             .menu-toggle.open span:nth-child(1) {
                 transform: rotate(45deg) translate(6px, 6px);
             }
@@ -491,6 +816,58 @@
                 text-align: center;
                 box-sizing: border-box;
             }
+
+            .mobile-lang-switcher {
+                display: block;
+            }
+
+            .custom-lang-dropdown {
+                display: none !important;
+            }
+        }
+
+        .step-card,
+        .dashboard-window {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+                border-color 0.3s ease,
+                background 0.3s ease;
+        }
+
+        .reveal {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+
+        .step-card.reveal:hover {
+            transform: translateX(10px) translateY(0) !important;
+            border-color: var(--bright-blue);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .step-card:nth-child(1) {
+            transition-delay: 0.1s;
+        }
+
+        .step-card:nth-child(2) {
+            transition-delay: 0.2s;
+        }
+
+        .step-card:nth-child(3) {
+            transition-delay: 0.3s;
+        }
+
+        .step-card:nth-child(4) {
+            transition-delay: 0.4s;
+        }
+
+        .no-data {
+            text-align: center;
+            color: var(--nav-gray);
+            font-family: 'Orbitron', sans-serif;
+            padding: 20px;
         }
     </style>
 </head>
@@ -511,6 +888,12 @@
             <li><a href="#features"> {{g.text['home']['nav']['links']['features']}} </a></li>
             <li><a href="#categories"> {{g.text['home']['nav']['links']['categories']}} </a></li>
             <li><a href="#ranking"> {{g.text['home']['nav']['links']['ranking']}} </a></li>
+
+            <li class="mobile-lang-switcher">
+                <a href="?lang=tr" class="{{ 'active-lang' if g.lang == 'tr' }}">🇹🇷 TR</a>
+                <span class="lang-divider">|</span>
+                <a href="?lang=en" class="{{ 'active-lang' if g.lang == 'en' }}">🇬🇧 EN</a>
+            </li>
         </ul>
 
         <div class="custom-lang-dropdown">
@@ -579,9 +962,92 @@
                 <p class="stat-label">{{ g.text['home']['stats']['cities'] }}</p>
             </div>
         </section>
+        <div class="neon-divider"></div>
+        <section class="info-grid-container" id="ranking">
+            <div class="info-grid">
+                <div class="steps-side">
+                    <div class="section-badge">{{ g.text['home']['how_it_works']['label'] }}</div>
+                    <h2 class="section-title">{{ g.text['home']['how_it_works']['title'] }}</h2>
+
+                    {% for step in g.text['home']['how_it_works']['steps'] %}
+                    <div class="step-card {{ 'active-step' if loop.index == 3 }}">
+                        <div class="step-number">0{{ loop.index }}</div>
+                        <div class="step-content">
+                            <h3>{{ step.title }}</h3>
+                            <p>{{ step.desc }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="ranking-side">
+                    <div class="dashboard-window">
+                        <div class="window-header">
+                            <div class="window-dots">
+                                <span class="dot-red"></span>
+                                <span class="dot-yellow"></span>
+                                <span class="dot-green"></span>
+                            </div>
+                            <div class="window-title">EDURACE {{ g.text['home']['ranking']['live_text'] }} DASHBOARD
+                            </div>
+                        </div>
+
+                        <div class="dashboard-content">
+                            <div class="ranking-header">
+                                <span class="satellite-icon">📡</span>
+                                {{ g.text['home']['ranking']['math_ranking_title'] }} 2026
+                            </div>
+
+                            <div class="ranking-list">
+                                {% if rankings and rankings|length > 0 %}
+                                {% set max_pts = rankings[0].total_points if rankings[0].total_points > 0 else 1 %}
+                                {% for school in rankings %}
+                                <div class="ranking-item">
+                                    <div class="rank-circle rank-{{ loop.index }}">
+                                        {{ loop.index }}
+                                    </div>
+                                    <div class="school-info">
+                                        <span class="school-name">{{ school.school_name }}</span>
+                                        <div class="progress-container">
+                                            {% set bar_width = (school.total_points / max_pts * 100) %}
+                                            <div class="progress-bar rank-bg-{{ loop.index if loop.index <= 3 else 'default' }}"
+                                                style="width: {{ bar_width }}%">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="points-value">
+                                        {{ "{:,}".format(school.total_points).replace(',', '.') }}
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                {% else %}
+                                <p class="no-data">{{ g.text['home']['ranking']['no_data'] }}</p>
+                                {% endif %}
+                            </div>
+
+                            <div class="dashboard-footer">
+                                <div class="live-indicator">
+                                    <span class="live-dot"></span>
+                                    {{ g.text['home']['ranking']['live_text'] }}
+                                </div>
+                                <div class="live-timer" id="liveTimer">02:34:48</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <script>
+        window.onbeforeunload = function () {
+            window.scrollTo(0, 0);
+        };
+
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+
         const menuToggle = document.getElementById('mobileMenu');
         const navLinks = document.querySelector('.nav-links');
         const langSelected = document.querySelector('.selected-lang');
@@ -619,6 +1085,8 @@
         }, { passive: true });
 
         function initAnimations() {
+            window.scrollTo(0, 0);
+
             const speedBg = document.getElementById('speedBg');
             for (let i = 0; i < 20; i++) {
                 const line = document.createElement('div');
@@ -629,12 +1097,16 @@
                 speedBg.appendChild(line);
             }
 
-            const observerOptions = { threshold: 0.2 };
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            };
 
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('visible');
+                        entry.target.classList.add('reveal');
 
                         if (entry.target.classList.contains('stats-container')) {
                             animateNumbers();
@@ -643,7 +1115,9 @@
                 });
             }, observerOptions);
 
-            document.querySelectorAll('.hero, .stats-container').forEach(el => observer.observe(el));
+            document.querySelectorAll('.hero, .stats-container, .neon-divider, .step-card, .dashboard-window').forEach(el => {
+                observer.observe(el);
+            });
         }
 
         function animateNumbers() {
@@ -651,7 +1125,7 @@
             stats.forEach(stat => {
                 if (stat.dataset.animated) return;
 
-                const target = parseInt(stat.innerText.replace(/\./g, ''));
+                const target = parseInt(stat.innerText.replace(/[^0-9]/g, ''));
                 let count = 0;
                 const speed = 2000;
                 const increment = target / (speed / 16);
