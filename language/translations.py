@@ -1,3 +1,4 @@
+# language/translations.py
 from flask import Blueprint, request, g, session
 
 languages = {
@@ -98,6 +99,58 @@ languages = {
                     {"icon": "🌍", "title": "Sosyal Bilimler", "desc": "Tarih, Coğrafya ve Felsefe disiplinlerinde genel kültür ve analiz yeteneği odaklı puanlama."},
                     {"icon": "🇬🇧", "title": "Yabancı Diller", "desc": "İngilizce ve diğer dillerde dil yetkinliği ve küresel iletişim becerileri yarışı."}
                 ]
+            },
+            "user_reviews": {
+                "label": "KULLANICI YORUMLARI",
+                "subtitle": "Okullar Bizi Seviyor",
+                "messages": [
+                    {"star": 5, "message": "EduRace ile öğrencilerimizin motivasyonu inanılmaz arttı. Sıralamada yükseldikçe çalışmak için ekstra enerji buluyorlar!", "username": "Ayşe Kaya", "section": "Matematik Öğretmeni, Ankara"},
+                    {"star": 5, "message": "Platformu kullanmaya başladığımızdan beri başka okullarla rekabet edip kendimizi geliştirme imkânı bulduk. Harika bir fikir!", "username": "Mehmet Öztürk", "section": "Okul Müdürü, İzmir"},
+                    {"star": 5, "message": "Hem öğretmenler hem veliler hem de öğrenciler aynı sayfada toplanıyor. Şeffaflık ve rekabet bir arada. Kesinlikle öneririm.", "username": "Fatma Yıldız", "section": "Veli Temsilcisi, İstanbul"}
+                ]
+            },
+            "try_demo": {
+                "title": "Kurumunuzu Geleceğin Eğitim Ekosistemine Dahil Edin",
+                "subtitle": "Hemen ücretsiz kayıt olun veya sistemin nasıl çalıştığını canlı bir demoda inceleyin.",
+                "btn_sing": "Şimdi Kayıt Ol",
+                "btn_demo": "Demo Talebi Gönder"
+            },
+            "footer": {
+                "logo": "EDURACE",
+                "tagline": "Türkiye'nin En Kapsamlı Okul Performans Platformu",
+                "about": "EduRace, okulları desteklemek, öğrenci başarısını ölçmek ve kurumsal gelişimi hızlandırmak için tasarlanmış dijital bir ekosistemdir.",
+                "quick_links": {
+                    "title": "HIZLI BAĞLANTILAR",
+                    "links": [
+                        {"text": "Nasıl Çalışır", "url": "#how"},
+                        {"text": "Kategoriler", "url": "#categories"},
+                        {"text": "Sıralama", "url": "#ranking"},
+                        {"text": "Kurumsal", "url": "#"}
+                    ]
+                },
+                "support": {
+                    "title": "DESTEK",
+                    "links": [
+                        {"text": "İletişim", "url": "#"},
+                        {"text": "SSS", "url": "#"},
+                        {"text": "Blog", "url": "#"},
+                        {"text": "Hukuki", "url": "#"}
+                    ]
+                },
+                "contact": {
+                    "title": "İLETİŞİM",
+                    "email": "Onurtncr06@icloud.com",
+                    "phone": "+90 (539) 570 09 82",
+                    "address": "Ankara, Türkiye"
+                },
+                "copyright": "© 2026 EduRace. Tüm hakları saklıdır.",
+                "made_with": "Türkiye'de 🇹🇷 Sevgiyle Yapılmıştır",
+                "developer": {
+                    "text": "Geliştirici:",
+                    "name": "Onur Tuncer",
+                    "github": "https://github.com/Onurtuncer-6",
+                    "email": "Onurtncr06@icloud.com"
+                }
             }
         }
     },
@@ -198,6 +251,58 @@ languages = {
                     {"icon": "🌍", "title": "Social Sciences", "desc": "Scoring focused on general knowledge and analysis in History, Geography, and Philosophy."},
                     {"icon": "🇬🇧", "title": "Foreign Languages", "desc": "A competition of linguistic proficiency and global communication skills."}
                 ]
+            },
+            "user_reviews": {
+                "label": "USER REVIEWS",
+                "subtitle": "Schools Love Us",
+                "messages": [
+                    {"star": 5, "message": "Student motivation has increased incredibly with EduRace. They find extra energy as they rise in the rankings!", "username": "Ayse Kaya", "section": "Math Teacher, Ankara"},
+                    {"star": 5, "message": "Since we started using the platform, we've had the chance to compete and improve. Great idea!", "username": "Mehmet Ozturk", "section": "Principal, Izmir"},
+                    {"star": 5, "message": "Teachers, parents, and students all on the same page. Transparency and competition together. Highly recommend.", "username": "Fatma Yildiz", "section": "Parent Rep, Istanbul"}
+                ]
+            },
+            "try_demo": {
+                "title": "Include Your Institution in the Education Ecosystem of the Future",
+                "subtitle": "Sign up for free now or review how the system works in a live demo.",
+                "btn_sing": "Register Now",
+                "btn_demo": "Send Demo Request"
+            },
+            "footer": {
+                "logo": "EDURACE",
+                "tagline": "Turkey's Most Comprehensive School Performance Platform",
+                "about": "EduRace is a digital ecosystem designed to support schools, measure student success, and accelerate institutional growth.",
+                "quick_links": {
+                    "title": "QUICK LINKS",
+                    "links": [
+                        {"text": "How It Works", "url": "#how"},
+                        {"text": "Categories", "url": "#categories"},
+                        {"text": "Rankings", "url": "#ranking"},
+                        {"text": "Institutional", "url": "#"}
+                    ]
+                },
+                "support": {
+                    "title": "SUPPORT",
+                    "links": [
+                        {"text": "Contact", "url": "#"},
+                        {"text": "FAQ", "url": "#"},
+                        {"text": "Blog", "url": "#"},
+                        {"text": "Legal", "url": "#"}
+                    ]
+                },
+                "contact": {
+                    "title": "CONTACT",
+                    "email": "Onurtncr06@icloud.com",
+                    "phone": "+90 (539) 570 09 82",
+                    "address": "Ankara, Turkey"
+                },
+                "copyright": "© 2026 EduRace. All rights reserved.",
+                "made_with": "Made with 🇹🇷 Love in Turkey",
+                "developer": {
+                    "text": "Developer:",
+                    "name": "Onur Tuncer",
+                    "github": "https://github.com/Onurtuncer-6",
+                    "email": "Onurtncr06@icloud.com"
+                }
             }
         }
     }

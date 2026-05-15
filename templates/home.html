@@ -13,6 +13,11 @@
 
     <title>{{ g.text['home']['title'] }}</title>
 
+    <meta name="description" content="Okullar arası akademik rekabetin merkezi. Matematik, Fen ve Yazılım liglerinde yarışın, okulunuzu zirveye taşıyın.">
+    <meta name="keywords" content="eğitim platformu, okullar arası yarışma, okul başarı sıralaması, Türkiye okul ligi">
+    <meta name="author" content="Onur Tuncer">
+    <meta name="robots" content="index, follow">
+
     <style>
         *,
         *::after,
@@ -941,7 +946,6 @@
             padding: 20px;
         }
 
-        /* --- YENİ EKLENEN BÖLÜM STİLLERİ --- */
         .grid-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -949,7 +953,6 @@
             margin-top: 40px;
         }
 
-        /* Ders Kategorileri (Görseldeki Yapı) */
         .category-card {
             background: var(--card-bg);
             border: 1px solid rgba(255, 255, 255, 0.05);
@@ -981,7 +984,6 @@
             color: var(--text-color);
         }
 
-        /* Özellikler (Stratejik Kartlar) */
         .feature-box {
             background: rgba(15, 23, 42, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.03);
@@ -1030,7 +1032,6 @@
 
         .arena-main-card {
             background: #111827;
-            /* Görseldeki koyu gri-mavi ton */
             border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 32px;
             padding: 40px;
@@ -1143,7 +1144,6 @@
             font-size: 18px;
         }
 
-        /* Sağ Kartlar */
         .arena-side-panels {
             display: flex;
             flex-direction: column;
@@ -1214,7 +1214,6 @@
             }
         }
 
-        /* YENİ RANKING BÖLÜMÜ STİLLERİ */
         .ranking-title-wrapper {
             margin-bottom: 40px;
         }
@@ -1419,7 +1418,482 @@
             font-size: 12px;
             line-height: 1.5;
         }
-    </style>
+
+        #user_reviews {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        #user_reviews .section-title {
+            margin-top: 15px;
+            max-width: 800px;
+        }
+
+        .reviews-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 100px 20px;
+        }
+
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 50px;
+        }
+
+        .review-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            padding: 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-align: left;
+        }
+
+        .review-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--bright-blue);
+            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.1);
+        }
+
+        .stars {
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .review-text {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            color: #CBD5E1;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .username {
+            color: var(--bright-blue);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .user-section {
+            color: var(--nav-gray);
+            font-size: 0.85rem;
+        }
+
+        .cta-section {
+            padding: 80px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cta-card {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(15, 23, 42, 0.8));
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 24px;
+            padding: 60px;
+            max-width: 1100px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .cta-content {
+            max-width: 600px;
+        }
+
+        .cta-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            color: white;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .cta-description {
+            color: var(--nav-gray);
+            font-size: 1.1rem;
+        }
+
+        .cta-actions {
+            display: flex;
+            gap: 20px;
+        }
+
+        .btn-primary-neon {
+            background: var(--bright-blue);
+            color: #000;
+            padding: 16px 32px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+        }
+
+        .btn-primary-neon:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 35px rgba(56, 189, 248, 0.6);
+        }
+
+        .btn-secondary-outline {
+            background: transparent;
+            color: white;
+            padding: 16px 32px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary-outline:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: white;
+        }
+
+        /* Mobil Uyumluluk */
+        @media (max-width: 992px) {
+            .cta-card {
+                flex-direction: column;
+                text-align: center;
+                padding: 40px;
+            }
+
+            .cta-content {
+                margin-bottom: 30px;
+            }
+
+            .cta-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+        }
+    
+        .edu-footer {
+            background: linear-gradient(135deg, #0F172A 0%, #1a1f3a 100%);
+            border-top: 2px solid rgba(56, 189, 248, 0.2);
+            color: var(--nav-gray);
+            padding: 80px 5% 40px;
+            margin-top: 120px;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+            gap: 50px;
+            margin-bottom: 50px;
+        }
+
+        .footer-section {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .footer-about {
+            grid-column: span 1;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            font-family: 'Orbitron', sans-serif;
+            color: var(--bright-blue);
+        }
+
+        .footer-logo .flag {
+            font-size: 2rem;
+        }
+
+        .footer-logo .logo-text {
+            letter-spacing: 2px;
+        }
+
+        .footer-tagline {
+            color: var(--bright-blue);
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .footer-desc {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .footer-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--bright-blue);
+            margin-bottom: 5px;
+        }
+
+        .footer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .footer-links a {
+            color: var(--nav-gray);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .footer-links a:hover {
+            color: var(--bright-blue);
+            transform: translateX(5px);
+        }
+
+        .footer-contact {
+            gap: 12px;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--nav-gray);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            color: var(--bright-blue);
+            transform: translateX(5px);
+        }
+
+        .contact-icon {
+            font-size: 1.2rem;
+        }
+
+        .footer-social {
+            gap: 15px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--bright-blue);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            background: rgba(56, 189, 248, 0.05);
+        }
+
+        .social-icon:hover {
+            background: rgba(56, 189, 248, 0.15);
+            border-color: var(--bright-blue);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(56, 189, 248, 0.2);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 30px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .footer-copyright {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .footer-made-with {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        @media (max-width: 1024px) {
+            .footer-container {
+                grid-template-columns: 1fr 1fr;
+                gap: 40px;
+            }
+
+            .footer-about {
+                grid-column: span 2;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .edu-footer {
+                padding: 50px 5% 30px;
+                margin-top: 60px;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .footer-about {
+                grid-column: span 1;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-links {
+                gap: 8px;
+            }
+
+            .contact-info {
+                gap: 10px;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .edu-footer {
+                padding: 40px 3% 20px;
+            }
+
+            .footer-logo {
+                font-size: 1.2rem;
+            }
+
+            .footer-title {
+                font-size: 0.75rem;
+            }
+
+            .footer-links a,
+            .contact-item {
+                font-size: 0.85rem;
+            }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .eco-card {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .eco-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .category-card {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .category-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .review-card {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .review-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .cta-section {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .cta-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .arena-section {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .arena-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+</style>
 </head>
 
 <body>
@@ -1755,6 +2229,91 @@
                 </div>
             </div>
         </section>
+        <section id="user_reviews" class="arena-section">
+            <div class="section-badge"> {{ g.text['home']['user_reviews']['label'] }} </div>
+            <h2 class="section-title">{{ g.text['home']['user_reviews']['subtitle'] }}</h2>
+
+            <div class="reviews-grid">
+                {% for msg in g.text['home']['user_reviews']['messages'] %}
+                <div class="review-card">
+                    <div class="stars">
+                        {% for i in range(msg.star) %}⭐{% endfor %}
+                    </div>
+                    <p class="review-text">"{{ msg.message }}"</p>
+                    <div class="review-footer">
+                        <div class="user-info">
+                            <h4 class="username">{{ msg.username }}</h4>
+                            <span class="user-section">{{ msg.section }}</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="cta-card">
+                <div class="cta-content">
+                    <h2 class="cta-title">Kurumunuzu Geleceğin Eğitim Ekosistemine Dahil Edin</h2>
+                    <p class="cta-description">Hemen ücretsiz kayıt olun veya sistemin nasıl çalıştığını canlı bir
+                        demoda inceleyin.</p>
+                </div>
+                <div class="cta-actions">
+                    <a href="#" class="btn-primary-neon">Şimdi Kayıt Ol</a>
+                    <a href="#" class="btn-secondary-outline">Demo Talebi Gönder</a>
+                </div>
+            </div>
+        </section>
+            <footer class="edu-footer">
+            <div class="footer-container">
+                <div class="footer-section footer-about">
+                    <div class="footer-logo">
+                        <span class="flag">🏁</span>
+                        <span class="logo-text">{{ g.text['home']['footer']['logo'] }}</span>
+                    </div>
+                    <p class="footer-tagline">{{ g.text['home']['footer']['tagline'] }}</p>
+                    <p class="footer-desc">{{ g.text['home']['footer']['about'] }}</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">{{ g.text['home']['footer']['quick_links']['title'] }}</h4>
+                    <ul class="footer-links">
+                        {% for link in g.text['home']['footer']['quick_links']['links'] %}
+                        <li><a href="{{ link.url }}">{{ link.text }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">{{ g.text['home']['footer']['support']['title'] }}</h4>
+                    <ul class="footer-links">
+                        {% for link in g.text['home']['footer']['support']['links'] %}
+                        <li><a href="{{ link.url }}">{{ link.text }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="footer-section footer-contact">
+                    <h4 class="footer-title">{{ g.text['home']['footer']['contact']['title'] }}</h4>
+                    <div class="contact-info">
+                        <a href="mailto:{{ g.text['home']['footer']['contact']['email'] }}" class="contact-item">
+                            <span class="contact-icon">📧</span>
+                            {{ g.text['home']['footer']['contact']['email'] }}
+                        </a>
+                        <div class="contact-item">
+                            <span class="contact-icon">📍</span>
+                            {{ g.text['home']['footer']['contact']['address'] }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p class="footer-copyright">{{ g.text['home']['footer']['copyright'] }}</p>
+                <p class="footer-made-with">{{ g.text['home']['footer']['made_with'] }}</p>
+            </div>
+        </footer>
+
     </main>
 
     <script>
@@ -1833,7 +2392,7 @@
                 });
             }, observerOptions);
 
-            document.querySelectorAll('.hero, .stats-container, .neon-divider, .step-card, .dashboard-window, .ecosystem-container, .eco-card').forEach(el => {
+            document.querySelectorAll('.hero, .stats-container, .neon-divider, .step-card, .dashboard-window, .ecosystem-container, .eco-card, .reveal, .category-card, .arena-section, .review-card, .cta-section, .edu-footer').forEach(el => {
                 observer.observe(el);
             });
         }
