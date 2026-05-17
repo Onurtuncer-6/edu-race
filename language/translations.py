@@ -152,6 +152,9 @@ languages = {
                     "email": "Onurtncr06@icloud.com"
                 }
             }
+        },
+        "school_register": {
+            "title": "Edu-Race | Kayıt Ol"
         }
     },
     "en": {
@@ -304,6 +307,9 @@ languages = {
                     "email": "Onurtncr06@icloud.com"
                 }
             }
+        },
+        "school_register": {
+            "title": "Edu-Race | Register Now"
         }
     }
 }

@@ -1,0 +1,241 @@
+-- ==========================================
+-- EDURACE DATABASE - FULL SCHEMA (MADALYA & ID GÜNCELLEMELİ)
+-- ==========================================
+
+-- ==========================================
+-- 0. ADIM: GEREKLİ UZANTILAR
+-- ==========================================
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- ==========================================
+-- 1. ADIM: TEMİZLİK (Sıfırdan kurulum için)
+-- ==========================================
+DROP FUNCTION IF EXISTS distribute_weekly_medals();
+DROP FUNCTION IF EXISTS get_weekly_leaderboard(TEXT);
+DROP FUNCTION IF EXISTS get_weekly_stats();
+DROP FUNCTION IF EXISTS get_leaderboard(TEXT);
+DROP FUNCTION IF EXISTS get_site_stats();
+DROP TABLE IF EXISTS medal_history CASCADE;
+DROP TABLE IF EXISTS activities CASCADE;
+DROP TABLE IF EXISTS profiles CASCADE;
+DROP TABLE IF EXISTS schools CASCADE;
+DROP TYPE IF EXISTS user_role CASCADE;
+DROP TYPE IF EXISTS application_status CASCADE;
+
+-- ==========================================
+-- 2. ADIM: ENUM TİPLERİ
+-- ==========================================
+CREATE TYPE application_status AS ENUM ('pending', 'approved', 'rejected');
+CREATE TYPE user_role AS ENUM ('principal', 'vice_principal', 'teacher', 'student', 'parent','counselor');
+
+-- ==========================================
+-- 3. ADIM: OKULLAR TABLOSU
+-- ==========================================
+CREATE TABLE schools (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    school_name TEXT NOT NULL,
+    official_email TEXT UNIQUE NOT NULL,
+    phone TEXT,
+    website TEXT,
+    country TEXT DEFAULT 'Türkiye',
+    city TEXT NOT NULL,
+    district TEXT NOT NULL,
+    full_address TEXT,
+    latitude DECIMAL(10, 8),
+    longitude DECIMAL(11, 8),
+    api_key UUID DEFAULT uuid_generate_v4(),
+    is_verified BOOLEAN DEFAULT false,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- ==========================================
+-- 4. ADIM: PROFİLLER (Kullanıcılar)
+-- ==========================================
+CREATE TABLE profiles (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    school_id UUID REFERENCES schools(id) ON DELETE SET NULL,
+    full_name TEXT NOT NULL,
+    role user_role NOT NULL,
+    email TEXT UNIQUE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- ==========================================
+-- 5. ADIM: AKTİVİTELER (Puan Kaynağı)
+-- ==========================================
+CREATE TABLE activities (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    school_id UUID REFERENCES schools(id) ON DELETE CASCADE,
+    activity_name TEXT NOT NULL,
+    branch TEXT DEFAULT 'Matematik',
+    points_earned INTEGER NOT NULL DEFAULT 0,
+    status TEXT DEFAULT 'approved',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- ==========================================
+-- 6. ADIM: MADALYA GEÇMİŞİ TABLOSU
+-- ==========================================
+CREATE TABLE medal_history (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    school_id UUID REFERENCES schools(id) ON DELETE CASCADE,
+    medal_type TEXT NOT NULL, -- 'gold', 'silver', 'bronze'
+    week_number INTEGER NOT NULL,
+    year INTEGER NOT NULL,
+    awarded_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    UNIQUE(school_id, week_number, year)
+);
+
+-- ==========================================
+-- 7. ADIM: GENEL (ALL-TIME) LİDERLİK FONKSİYONU (res_id eklendi)
+-- ==========================================
+CREATE OR REPLACE FUNCTION get_leaderboard(p_country TEXT DEFAULT 'Türkiye')
+RETURNS TABLE (res_id UUID, res_name TEXT, res_points BIGINT, res_city TEXT, res_district TEXT) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT 
+        s.id as res_id,
+        s.school_name, 
+        COALESCE(SUM(a.points_earned), 0) as total_points,
+        s.city, 
+        s.district
+    FROM schools s
+    LEFT JOIN activities a ON s.id = a.school_id 
+        AND a.status = 'approved' 
+    WHERE (LOWER(s.country) = LOWER(p_country) OR p_country = '') 
+      AND s.is_verified = true
+    GROUP BY s.id, s.school_name, s.city, s.district
+    ORDER BY total_points DESC
+    LIMIT 20;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- ==========================================
+-- 8. ADIM: HAFTALIK LİDERLİK FONKSİYONU (res_id eklendi)
+-- ==========================================
+CREATE OR REPLACE FUNCTION get_weekly_leaderboard(p_country TEXT DEFAULT 'Türkiye')
+RETURNS TABLE (
+    res_id UUID, 
+    res_name TEXT, 
+    res_weekly_points BIGINT, 
+    res_city TEXT, 
+    res_district TEXT, 
+    res_activity_count INT
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT 
+        s.id as res_id,
+        s.school_name as res_name, 
+        COALESCE(SUM(a.points_earned), 0) as weekly_points,
+        s.city as res_city, 
+        s.district as res_district,
+        COUNT(a.id)::INT as activity_count
+    FROM schools s
+    LEFT JOIN activities a ON s.id = a.school_id 
+        AND a.status = 'approved' 
+        AND a.created_at >= DATE_TRUNC('week', CURRENT_TIMESTAMP AT TIME ZONE 'UTC')
+    WHERE (LOWER(s.country) = LOWER(p_country) OR p_country = '') 
+      AND s.is_verified = true
+    GROUP BY s.id, s.school_name, s.city, s.district
+    ORDER BY weekly_points DESC
+    LIMIT 20;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- ==========================================
+-- 9. ADIM: HAFTALIK İSTATİSTİK FONKSİYONU
+-- ==========================================
+CREATE OR REPLACE FUNCTION get_weekly_stats()
+RETURNS JSON AS $$
+DECLARE
+    result JSON;
+BEGIN
+    SELECT json_build_object(
+        'total_schools', (SELECT count(*) FROM schools WHERE is_verified = true),
+        'weekly_activities', (
+            SELECT count(*) FROM activities 
+            WHERE status = 'approved' 
+            AND created_at >= DATE_TRUNC('week', CURRENT_TIMESTAMP AT TIME ZONE 'UTC')
+        ),
+        'weekly_points_distributed', (
+            SELECT COALESCE(SUM(points_earned), 0) FROM activities 
+            WHERE status = 'approved'
+            AND created_at >= DATE_TRUNC('week', CURRENT_TIMESTAMP AT TIME ZONE 'UTC')
+        ),
+        'total_students', (SELECT count(*) FROM profiles WHERE role = 'student'),
+        'total_cities', (SELECT count(DISTINCT city) FROM schools WHERE is_verified = true)
+    ) INTO result;
+    RETURN result;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- ==========================================
+-- 10. ADIM: GENEL İSTATİSTİK FONKSİYONU
+-- ==========================================
+CREATE OR REPLACE FUNCTION get_site_stats()
+RETURNS JSON AS $$
+DECLARE
+    result JSON;
+BEGIN
+    SELECT json_build_object(
+        'total_schools', (SELECT count(*) FROM schools WHERE is_verified = true),
+        'active_races', (SELECT count(*) FROM activities WHERE status = 'approved'),
+        'total_students', (SELECT count(*) FROM profiles WHERE role = 'student'),
+        'total_cities', (SELECT count(DISTINCT city) FROM schools WHERE is_verified = true)
+    ) INTO result;
+    RETURN result;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- ==========================================
+-- 11. ADIM: MADALYA DAĞITIM OTOMASYONU
+-- ==========================================
+CREATE OR REPLACE FUNCTION distribute_weekly_medals()
+RETURNS VOID AS $$
+DECLARE
+    curr_week INTEGER := EXTRACT(WEEK FROM CURRENT_DATE);
+    curr_year INTEGER := EXTRACT(YEAR FROM CURRENT_DATE);
+BEGIN
+    -- Altın (1.)
+    INSERT INTO medal_history (school_id, medal_type, week_number, year)
+    SELECT res_id, 'gold', curr_week, curr_year
+    FROM get_weekly_leaderboard('Türkiye') LIMIT 1
+    ON CONFLICT (school_id, week_number, year) DO NOTHING;
+
+    -- Gümüş (2. ve 3.)
+    INSERT INTO medal_history (school_id, medal_type, week_number, year)
+    SELECT res_id, 'silver', curr_week, curr_year
+    FROM get_weekly_leaderboard('Türkiye') OFFSET 1 LIMIT 2
+    ON CONFLICT (school_id, week_number, year) DO NOTHING;
+END;
+$$ LANGUAGE plpgsql;
+
+-- ==========================================
+-- 12. ADIM: ÖRNEK VERİLER
+-- ==========================================
+INSERT INTO schools (id, school_name, official_email, city, district, country, is_verified) VALUES 
+('a1111111-1111-1111-1111-111111111111', 'İstanbul Erkek Lisesi', 'istanbul@lise.tr', 'İstanbul', 'Fatih', 'Türkiye', true),
+('a2222222-2222-2222-2222-222222222222', 'Ankara Fen Lisesi', 'ankara@lise.tr', 'Ankara', 'Çankaya', 'Türkiye', true),
+('a3333333-3333-3333-3333-333333333333', 'İzmir Fen Lisesi', 'izmir@lise.tr', 'İzmir', 'Bornova', 'Türkiye', true);
+
+INSERT INTO activities (school_id, activity_name, points_earned, status) VALUES 
+('a1111111-1111-1111-1111-111111111111', 'Matematik Yarışması', 500, 'approved'),
+('a2222222-2222-2222-2222-222222222222', 'Bilim Fuarı', 300, 'approved');
+
+-- Örnek Madalya (Test İçin)
+INSERT INTO medal_history (school_id, medal_type, week_number, year) VALUES 
+('a1111111-1111-1111-1111-111111111111', 'gold', 19, 2026),
+('a2222222-2222-2222-2222-222222222222', 'silver', 19, 2026),
+('a1111111-1111-1111-1111-111111111111', 'gold', 18, 2026);
+
+-- ==========================================
+-- 13. ADIM: GÜVENLİK
+-- ==========================================
+ALTER TABLE schools ENABLE ROW LEVEL SECURITY;
+ALTER TABLE activities ENABLE ROW LEVEL SECURITY;
+ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE medal_history ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Public access" ON schools FOR SELECT USING (true);
+CREATE POLICY "Public access medals" ON medal_history FOR SELECT USING (true);
